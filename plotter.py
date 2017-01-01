@@ -21,8 +21,6 @@ mem_color_R = '#FABD5E'
 motor_color = '#0071BB'
 motor_color_L = '#0071BB'
 motor_color_R = '#505AA5'
-#flow_color_L = '#806641'
-#flow_color_R = '#AE956D'
 flow_color_L = 'blue'
 flow_color_R = 'green'
 
@@ -32,10 +30,6 @@ PLOT_PATH = 'plots'
 def save_plot(fig, filename):
     fig.savefig(os.path.join(PLOT_PATH, filename + '.pdf'),
                 bbox_inches='tight', dpi=300)
-    #fig.savefig(os.path.join(PLOT_PATH, filename + '.svg'),
-    #            bbox_inches='tight', dpi=300)
-    #fig.savefig(os.path.join(PLOT_PATH, filename + '.png'),
-    #            bbox_inches='tight', dpi=300)
 
 
 def plot_route(h, v, T_outbound, T_inbound, plot_speed=False,
@@ -231,8 +225,6 @@ def plot_traces(log, include=['TN1', 'TN2', 'CL1', 'TB1', 'CPU4', 'CPU1', 'motor
                 for handle in l.legendHandles:
                     handle.set_visible(False)
                 l.draw_frame(False)
-            # heatmap plots
-        # TODO(tomish) create line plots for CXBasic
         elif cell_type in ['TL2', 'CL1'] and data[cell_type].shape[0] == 1:
             ax[i].plot(data[cell_type][0], color=colors[cell_type]);
             ax[i].set_yticks([-np.pi, np.pi])

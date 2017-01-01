@@ -19,7 +19,6 @@ def compute_angular_distance(V, T_outbound, num_steps=20):
     X, Y = get_xy_from_velocity(V)
 
     nest_angles = np.arctan2(-X[:, T_outbound], -Y[:, T_outbound])
-    # TODO (tomish) Check this formula. Might be wrong!
 
     if V.shape[1] >= T_outbound+num_steps:
         return_angles = np.arctan2(X[:, T_outbound+num_steps] - X[:, T_outbound],

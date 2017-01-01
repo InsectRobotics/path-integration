@@ -137,7 +137,6 @@ def update_cells(heading, velocity, tb1, memory, cx, filtered_steps=0.0):
     cpu4 = cx.cpu4_output(memory)
 
     # Steer based on memory and direction
-    # TODO: we could make this optional to speed things up on outbound
     cpu1 = cx.cpu1_output(tb1, cpu4)
     motor = cx.motor_output(cpu1)
     return tl2, cl1, tb1, tn1, tn2, memory, cpu4, cpu1, motor
@@ -146,7 +145,6 @@ def update_cells(heading, velocity, tb1, memory, cx, filtered_steps=0.0):
 def generate_memory(headings, velocity, cx, bump_shift=0.0, filtered_steps=0.0,
                     logging=False):
     """For an outbound route, generate all the cell activity."""
-    # TODO(tomish) implement bump shift for premade paths
     T = len(headings)
 
     if logging:
@@ -175,7 +173,6 @@ def homing(T, tb1, memory, cx, acceleration=default_acc, drag=default_drag,
            turn_sharpness=1.0, logging=True, bump_shift=0.0,
            filtered_steps=0.0):
     """Based on current state, return home. First is duplicate"""
-    # TODO: Check some serious off by one errors here! on a small course best
     headings = np.empty(T + 1)
     headings[0] = current_heading
     velocity = np.empty([T + 1, 2])
@@ -187,8 +184,6 @@ def homing(T, tb1, memory, cx, acceleration=default_acc, drag=default_drag,
         cx_log = None
 
     for t in range(1, T + 1):
-        # TODO: Check some serious off by one errors here!
-        # on a small course best
         r = headings[t - 1] - headings[t - 2]
         r = (r + np.pi) % (2 * np.pi) - np.pi
         tl2, cl1, tb1, tn1, tn2, memory, cpu4, cpu1, motor = update_cells(
@@ -201,12 +196,7 @@ def homing(T, tb1, memory, cx, acceleration=default_acc, drag=default_drag,
         if logging:
             cx_log.update_log(t, tl2, cl1, tb1, tn1, tn2, memory, cpu4, cpu1,
                               motor)
-
         rotation = turn_sharpness * motor
-        #rotation += turn_sharpness * motor
-        #rotation *= 0.4
-        #acceleration = np.max(0.55 - memory)
-        #acceleration = 0.02 * np.sum(cpu1)
 
         headings[t], velocity[t, :] = bee_simulator.get_next_state(
             headings[t - 1], velocity[t - 1, :], rotation, acceleration, drag)
