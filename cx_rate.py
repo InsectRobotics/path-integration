@@ -58,8 +58,8 @@ class CXRate(CX):
                  noise=0.1,
                  tl2_slope=tl2_slope_tuned,
                  tl2_bias=tl2_bias_tuned,
-                 tl2_prefs=-np.tile(np.linspace(0, 2*np.pi, N_TB1,
-                                                endpoint=False), 2),
+                 tl2_prefs=np.tile(np.linspace(0, 2*np.pi, N_TB1,
+                                               endpoint=False), 2),
                  cl1_slope=cl1_slope_tuned,
                  cl1_bias=cl1_bias_tuned,
                  tb1_slope=tb1_slope_tuned,
@@ -215,7 +215,7 @@ class CXRate(CX):
         cpu1b = np.array([cpu1[-1], cpu1[0]])
         motor = np.dot(self.W_CPU1a_motor, cpu1a)
         motor += np.dot(self.W_CPU1b_motor, cpu1b)
-        output = (motor[1] - motor[0]) * 0.25  # To kill the noise a bit!
+        output = (motor[0] - motor[1]) * 0.25  # To kill the noise a bit!
         return output
 
     def __str__(self):
